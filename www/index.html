@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" href="data:,">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obligatorio - Taller de Desarrollo para dispositivos móviles</title>
+
+    
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+
+    <ion-app>
+        <ion-router id="ruteo">
+            <ion-route url="/" component="page-home"></ion-route>
+            <ion-route url="/registro" component="page-registro"></ion-route>
+            <ion-route url="/login" component="page-login"></ion-route>
+            <ion-route url="/agregarPersona" component="page-agregar-persona"></ion-route>
+            <ion-route url="/listadoCensados" component="page-listadoCensados"></ion-route>
+            <ion-route url="/totalCensados" component="page-totalCensados"></ion-route>
+            <ion-route url="/mapa" component="page-mapa"></ion-route>
+        </ion-router>
+        <ion-nav id="nav"></ion-nav>
+
+        <ion-menu side="start" menu-id="first" content-id="main" id="menu">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-title>Menú</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <ion-list>
+                    <ion-item id="btnRegistro" href="/registro" onclick="cerrarMenu()">Registro</ion-item>
+                    <ion-item id="btnLogin" href="/login" onclick="cerrarMenu()">Login</ion-item>
+                    <ion-item id="btnAgregarPersonaMenu" href="/agregarPersona" onclick="cerrarMenu()">Agregar nuevo censado</ion-item>
+                    <ion-item id="btnListadoCensados" href="/listadoCensados" onclick="cerrarMenu()">Listado de censados</ion-item>
+                    <ion-item id="btnTotalCensados" href="/totalCensados" onclick="cerrarMenu()">Total de censados</ion-item>
+                    <ion-item id="btnMapa" href="/mapa" onclick="cerrarMenu()">Mapa</ion-item>
+                    <ion-item id="btnLogout" onclick="cerrarSesion()">Logout</ion-item>
+
+                </ion-list>
+            </ion-content>
+        </ion-menu>
+        <div id="main"></div>
+
+        <page-home class="ion-page" id="pantalla-home">
+        </page-home>
+
+        <page-registro class="ion-page" id="pantalla-registro">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start" color = "warning">
+                        <ion-menu-button color="dark"></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>Registro</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <br><br>
+                <ion-list>
+                    <ion-item>
+                        <ion-input id="txtRegistroUsuario"  label="Usuario" label-placement="floating" required></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-input id="txtRegistroPassword" type="password"  label="Contraseña" label-placement="floating" required></ion-input>
+                    </ion-item>
+                </ion-list>
+                <br>
+                <ion-button id="btnRegistroIngresar" expand="block" color="warning">Registrarse</ion-button>
+                <br>
+            </ion-content>
+        </page-registro>
+
+        <page-login class="ion-page" id="pantalla-login">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-button slot="start" color = "warning">
+                        <ion-menu-button color="dark"></ion-menu-button>
+                    </ion-button>
+                    <ion-title>Login</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <br><br>
+                <ion-list>
+                    <ion-item>
+                        <ion-input id="txtLoginUsuario"  label="Usuario" label-placement="floating" required></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-input id="txtLoginPassword" type="password"  label="Contraseña" label-placement="floating" required></ion-input>
+                    </ion-item>
+                </ion-list>
+                <br>
+                <ion-button id="btnLoginIngresar" expand="block" color="warning">Ingresar</ion-button>
+                <br>
+            </ion-content>
+        </page-login>
+
+        <page-agregar-persona class="ion-page" id="patalla-agregar-persona">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-button slot="start" color = "warning">
+                        <ion-menu-button color="dark"></ion-menu-button>
+                    </ion-button>
+                    <ion-title>Agregar censado</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <ion-list>
+                    <ion-item>
+                        <ion-input id="txtNombreCensado"  label="Nombre" label-placement="floating" required></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-select id="pantalla-agregar-persona-combo-departamento" placeholder="Seleccione departamento" required>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item>
+                        <ion-select id="pantalla-agregar-persona-combo-ciudades" placeholder="Seleccione ciudad" required>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item>
+                        <ion-input id="fechaNacCensado" type="date" label="Fecha de nacimiento" label-placement="floating" required></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-select id="pantalla-agregar-persona-combo-ocupacion"  placeholder="Seleccione ocupacion" required>
+                        </ion-select>
+                    </ion-item>
+                </ion-list>
+                <br>
+                <ion-button id="btnAgregarPersona" expand="block" color="warning">Agregar censado</ion-button>
+                <br>
+            </ion-content>
+        </page-agregar-persona>
+
+        <page-listadoCensados class="ion-page" id="pantalla-listadoCensados">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-button slot="start" color = "warning">
+                        <ion-menu-button color="dark"></ion-menu-button>
+                    </ion-button>
+                    <ion-title>Listado de Censados</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <ion-searchbar id="txtCensadosFiltro" placeholder="Buscador por ocupación"></ion-searchbar>
+                <div id="listaCensados"></div>
+                <br><br><br>
+            </ion-content>
+        </page-listadoCensados>
+        
+        <page-totalCensados class="ion-page" id="pantalla-totalCensados">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-button slot="start" color = "warning">
+                        <ion-menu-button color="dark"></ion-menu-button>
+                    </ion-button>
+                    <ion-title>Total Censados</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <br>
+            <ion-content>
+                <div id="censadosTotales"></div>
+            </ion-content>
+        </page-totalCensados>
+
+        <page-mapa class="ion-page" id="pantalla-mapa">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-button slot="start" color = "warning">
+                        <ion-menu-button color = "dark"></ion-menu-button>
+                    </ion-button>
+                    <ion-title>Mapa</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+
+                    <ion-list>
+                        <ion-item>
+                            <ion-input id="map_input_km" label-placement="floating" label="Ingrese un radio en Km" type="number"></ion-input>
+                          </ion-item>
+                    </ion-list>
+                    <br>
+                    <div id="mapa-sucursales" style="height: 500px;"></div>
+            </ion-content>
+        </page-mapa>
+    </ion-app>
+    <script type="text/javascript" src="js/codigoObligatorio.js"></script>
+</body>
+</html>
